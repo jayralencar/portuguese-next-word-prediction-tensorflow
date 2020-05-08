@@ -6,8 +6,10 @@ from keras.models import Sequential
 from keras.layers import LSTM, Dropout
 from keras.layers.core import Dense, Activation, Dropout, RepeatVector
 
+import json
+
 data = ""
-with open("./data/pg54829.txt") as f:
+with open("./data/corpus.txt") as f:
     data = f.read().strip()
 
 tokenizer = Tokenizer()
@@ -28,17 +30,22 @@ for encoded in tokenizer.texts_to_sequences(data.split("\n")):
 print("TOKENS: ", len(tokenizer.word_index.items()))
 print('Total Sequences: %d' % len(sequences))
 sequences = np.array(sequences)
-X, y = sequences[:,:-1], to_categorical(sequences[:,-1], num_classes=vocab_size)
-X =  np.reshape(X,(X.shape[0], X.shape[1],1))
+X, y = sequences[:, :-
+                 1], to_categorical(sequences[:, -1], num_classes=vocab_size)
+X = np.reshape(X, (X.shape[0], X.shape[1], 1))
+
+fil = open('data/vocab.json', 'w', encoding="utf-8")
+fil.write(json.dumps(tokenizer.to_json(), ensure_ascii=False))
 
 model = Sequential()
-model.add(LSTM(256, input_shape=(2,1),return_sequences = False))
+model.add(LSTM(256, input_shape=(2, 1), return_sequences=False))
 model.add(Dense(vocab_size))
 model.add(Activation('softmax'))
 
 print(model.summary())
 # # compile network
-model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
+model.compile(loss='categorical_crossentropy',
+              optimizer='adam', metrics=['accuracy'])
 
 # tf.keras.utils.plot_model(model)
 
@@ -50,7 +57,7 @@ text = " parece estar chorando"
 text = " ".join(text.split(" ")[:3])
 encoded = tokenizer.texts_to_sequences([text])[0]
 encoded = np.array([encoded])
-encoded = np.reshape(encoded, (encoded.shape[0], encoded.shape[1],1))
+encoded = np.reshape(encoded, (encoded.shape[0], encoded.shape[1], 1))
 next = model.predict(encoded, verbose=0)
 for x in next:
     print(len(x))
@@ -62,6 +69,5 @@ for x in next:
         # print(x)
         for word, index in tokenizer.word_index.items():
             if index == id_:
-                print(text+ " -> "+ word)
+                print(text + " -> " + word)
                 # print(word + " ")
-
