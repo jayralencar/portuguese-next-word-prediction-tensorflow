@@ -1,10 +1,22 @@
 # portuguese-next-word-prediction-tensorflow
 Sugestão de palavras com Tensorflow
 
-wget http://143.107.183.175:22980/download.php?file=embeddings/glove/glove_s50.zip
+Baixe e prepare o corpus
+```
+make corpus
+```
 
-https://github.com/fabiocmazzo/corpusportugues
+Treine o modelo
+```
+python train.py
+```
 
-http://aplauso.imprensaoficial.com.br/lista-livros.php?pagina=3&iSerieID=&busca-livros-lista=
+Teste o modelo
+```
+python test.py
+```
 
-http://www.gutenberg.org/cache/epub/54829/pg54829.txt
+Gere texto a partir do modelo
+```
+python language_generation
+```

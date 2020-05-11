@@ -1,35 +1,47 @@
 import json
 import numpy as np
-from tensorflow.keras.preprocessing.text import tokenizer_from_json
-from keras.models import Sequential, load_model
+from keras.models import load_model
+import heapq
+from nltk.tokenize import RegexpTokenizer
+import pickle
+
+WORD_LENGTH = 5
+tokenizer = RegexpTokenizer(r'\w+')
 
 with open('data/vocab.json') as f:
-    tokenizer = tokenizer_from_json(json.load(f))
+    unique_words = json.load(f)
 
-model = load_model('saved_models/keras_model_2.h5')
-text = " predominante da vasta"
-text = " ".join(text.split(" ")[:3])
-encoded = tokenizer.texts_to_sequences([text])[0]
-print(encoded)
+model = load_model('saved_models/word_prediction.h5')
 
-text = " Hoje"
-while True:
-    parts = text.split(' ')
-    if len(parts) < 3:
-        encoded = [0, 0, 0][:3-len(parts)] + \
-            tokenizer.texts_to_sequences([text])[0]
-    else:
-        encoded = tokenizer.texts_to_sequences(
-            [" ".join(text.split(" ")[-2:])])[0]
-    encoded = np.array([encoded])
-    encoded = np.reshape(encoded, (encoded.shape[0], encoded.shape[1], 1))
-    next = model.predict(encoded, verbose=0)
-    for x in next:
-        sort = x.argsort()[-3:][::-1]
-        for id_ in sort:
-            for word, index in tokenizer.word_index.items():
-                if index == id_:
-                    print(word)
 
-    new_text = input(text+" ->")
-    text += " "+new_text
+def prepare_input(text):
+    x = np.zeros((1, WORD_LENGTH, len(unique_words)))
+    for t, word in enumerate(text.split()):
+        print(word)
+        x[0, t, unique_words.index(word)] = 1
+    return x
+
+
+def sample(preds, top_n=3):
+    preds = np.asarray(preds).astype('float64')
+    preds = np.log(preds)
+    exp_preds = np.exp(preds)
+    preds = exp_preds / np.sum(exp_preds)
+
+    return heapq.nlargest(top_n, range(len(preds)), preds.take)
+
+
+def predict_completions(text, n=3):
+    if text == "":
+        return("0")
+    x = prepare_input(text)
+    preds = model.predict(x, verbose=0)[0]
+    next_indices = sample(preds, n)
+    return [unique_words[idx] for idx in next_indices]
+
+
+q = "A votação da lei também levou a Brasília integrantes"
+print("correct sentence: ", q)
+seq = " ".join(tokenizer.tokenize(q.lower())[0:5])
+print("Sequence: ", seq)
+print("next possible words: ", predict_completions(seq, 5))
