@@ -54,7 +54,7 @@ optimizer = RMSprop(lr=0.01)
 model.compile(loss='categorical_crossentropy',
               optimizer=optimizer, metrics=['accuracy'])
 history = model.fit(X, Y, validation_split=0.05,
-                    batch_size=128, epochs=2, shuffle=True).history
+                    batch_size=128, epochs=50, shuffle=True).history
 
 pickle.dump(history, open("./data/history.p", "wb"))
 model.save('saved_models/word_prediction.h5')
