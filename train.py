@@ -17,11 +17,10 @@ print("Qtd. de palavras:", len(words))
 
 unique_words = np.unique(words)
 print("Qtd. de palavras únicas:", len(unique_words))
+unique_word_index = dict((c, i) for i, c in enumerate(unique_words))
 
 a = open('data/vocab.json', 'w')
 a.write(json.dumps(unique_words.tolist()))
-
-unique_word_index = dict((c, i) for i, c in enumerate(unique_words))
 
 SEQUENCE_LENGTH = 5
 prev_words = []
