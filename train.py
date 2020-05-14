@@ -6,10 +6,6 @@ from keras.layers.core import Dense, Activation
 from keras.optimizers import RMSprop
 import matplotlib.pyplot as plt
 import json
-import pickle
-import heapq
-
-# Reference: https://medium.com/analytics-vidhya/build-a-simple-predictive-keyboard-using-python-and-keras-b78d3c88cffb
 
 path = 'data/training_corpus.txt'
 text = open(path).read().lower()
@@ -56,7 +52,6 @@ model.compile(loss='categorical_crossentropy',
 history = model.fit(X, Y, validation_split=0.05,
                     batch_size=128, epochs=50, shuffle=True).history
 
-pickle.dump(history, open("./data/history.p", "wb"))
 model.save('saved_models/word_prediction.h5')
 
 

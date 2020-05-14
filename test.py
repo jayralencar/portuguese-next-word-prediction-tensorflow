@@ -3,7 +3,6 @@ import numpy as np
 from keras.models import load_model
 import heapq
 from nltk.tokenize import RegexpTokenizer
-import pickle
 
 WORD_LENGTH = 5
 tokenizer = RegexpTokenizer(r'\w+')
