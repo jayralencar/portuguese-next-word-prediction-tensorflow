@@ -6,6 +6,7 @@ from keras.layers.core import Dense, Activation
 from keras.optimizers import RMSprop
 import matplotlib.pyplot as plt
 import json
+import pickle
 
 path = 'data/training_corpus.txt'
 text = open(path).read().lower()
@@ -22,7 +23,7 @@ unique_word_index = dict((c, i) for i, c in enumerate(unique_words))
 a = open('data/vocab.json', 'w')
 a.write(json.dumps(unique_words.tolist()))
 
-SEQUENCE_LENGTH = 5
+SEQUENCE_LENGTH = 3
 prev_words = []
 next_words = []
 for i in range(len(words) - SEQUENCE_LENGTH):
@@ -52,6 +53,7 @@ history = model.fit(X, Y, validation_split=0.05,
                     batch_size=128, epochs=120, shuffle=True).history
 
 model.save('saved_models/word_prediction.h5')
+pickle.dump(history, open("history.p", "wb"))
 
 plt.plot(history['accuracy'])
 plt.plot(history['val_accuracy'])

@@ -4,7 +4,7 @@ from keras.models import load_model
 import heapq
 from nltk.tokenize import RegexpTokenizer
 
-WORD_LENGTH = 5
+SEQUENCE_LENGTH = 3
 tokenizer = RegexpTokenizer(r'\w+')
 
 with open('data/vocab.json') as f:
@@ -14,7 +14,7 @@ model = load_model('saved_models/word_prediction.h5')
 
 
 def prepare_input(text):
-    x = np.zeros((1, WORD_LENGTH, len(unique_words)))
+    x = np.zeros((1, SEQUENCE_LENGTH, len(unique_words)))
     for t, word in enumerate(text.split()):
         print(word)
         x[0, t, unique_words.index(word)] = 1

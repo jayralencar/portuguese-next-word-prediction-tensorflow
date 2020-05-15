@@ -3,7 +3,7 @@ from os.path import isfile, join
 dataset_path = './data/fapesp-corpora/corpora/pt/data'
 onlyfiles = [f for f in listdir(dataset_path) if isfile(join(dataset_path, f))]
 
-FILES_NUMBER = 10
+FILES_NUMBER = 20
 
 trainin_text = ''
 for file_ in onlyfiles[:FILES_NUMBER]:

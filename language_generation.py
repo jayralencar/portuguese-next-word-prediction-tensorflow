@@ -4,7 +4,7 @@ from keras.models import load_model
 import heapq
 from nltk.tokenize import RegexpTokenizer
 
-WORD_LENGTH = 5
+SEQUENCE_LENGTH = 3
 tokenizer = RegexpTokenizer(r'\w+')
 
 with open('data/vocab.json') as f:
@@ -14,7 +14,7 @@ model = load_model('saved_models/word_prediction.h5')
 
 
 def prepare_input(text):
-    x = np.zeros((1, WORD_LENGTH, len(unique_words)))
+    x = np.zeros((1, SEQUENCE_LENGTH, len(unique_words)))
     for t, word in enumerate(text.split()):
         x[0, t, unique_words.index(word)] = 1
     return x
@@ -40,8 +40,8 @@ def predict_completions(text, n=3):
 
 sentence = 'Eu'
 words = sentence.split(" ")
-while len(words) < WORD_LENGTH:
-    q = (["0"]*WORD_LENGTH)[:WORD_LENGTH-len(words)] + words
+while len(words) < SEQUENCE_LENGTH:
+    q = (["0"]*SEQUENCE_LENGTH)[:SEQUENCE_LENGTH-len(words)] + words
     sentence = ' '.join(q)
     seq = " ".join(tokenizer.tokenize(sentence.lower())[0:5])
     preds = predict_completions(seq, 1)

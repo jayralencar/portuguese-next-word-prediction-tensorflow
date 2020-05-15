@@ -8,6 +8,7 @@ pip install keras
 pip install numpy
 pip install matplotlib
 pip install nltk
+pip install pickle
 ```
 
 Baixe e prepare o corpus
