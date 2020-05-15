@@ -129,4 +129,4 @@ dmypy.json
 .pyre/
 
 data/
-saved_models/keras_model_2.h5
+saved_models/

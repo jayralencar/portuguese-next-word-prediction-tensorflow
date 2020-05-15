@@ -39,8 +39,8 @@ def predict_completions(text, n=3):
     return [unique_words[idx] for idx in next_indices]
 
 
-q = "A votação da lei também levou a Brasília integrantes"
+q = "também se reunia"
 print("correct sentence: ", q)
-seq = " ".join(tokenizer.tokenize(q.lower())[0:5])
+seq = " ".join(tokenizer.tokenize(q.lower())[0:SEQUENCE_LENGTH])
 print("Sequence: ", seq)
 print("next possible words: ", predict_completions(seq, 5))
