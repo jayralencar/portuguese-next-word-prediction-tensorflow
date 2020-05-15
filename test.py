@@ -39,7 +39,7 @@ def predict_completions(text, n=3):
     return [unique_words[idx] for idx in next_indices]
 
 
-q = "também se reunia"
+q = "cada um pensa"
 print("correct sentence: ", q)
 seq = " ".join(tokenizer.tokenize(q.lower())[0:SEQUENCE_LENGTH])
 print("Sequence: ", seq)

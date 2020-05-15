@@ -38,7 +38,7 @@ def predict_completions(text, n=3):
     return [unique_words[idx] for idx in next_indices]
 
 
-sentence = 'Eu'
+sentence = 'cada'
 words = sentence.split(" ")
 while len(words) < SEQUENCE_LENGTH:
     q = (["0"]*SEQUENCE_LENGTH)[:SEQUENCE_LENGTH-len(words)] + words
